@@ -1,32 +1,33 @@
 package guru.springframework.springrestclientexamples.services;
 
 import guru.springframework.api.domain.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-@ExtendWith(SpringExtension.class)
+import static org.junit.Assert.assertEquals;
+
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class ApiServiceImplTest {
 
     @Autowired
     ApiService apiService;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() throws Exception {
     }
 
     @Test
-    void getUsers() {
+    public void testGetUsers() throws Exception {
 
-        List<User> users = apiService.getUsers(10);
-        assertEquals(10,users.size());
+        List<User> users = apiService.getUsers(3);
+
+        assertEquals(3, users.size());
     }
 }

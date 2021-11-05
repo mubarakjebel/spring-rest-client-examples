@@ -7,39 +7,32 @@ import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ServerWebExchange;
 
 @Slf4j
 @Controller
 public class UserController {
 
-    private final ApiService apiService;
+    private ApiService apiService;
 
     public UserController(ApiService apiService) {
         this.apiService = apiService;
     }
 
-    @GetMapping({"", "/", "index"})
+    @GetMapping({"", "/", "/index"})
     public String index() {
         return "index";
     }
 
     @PostMapping("/users")
-    public String formPost(Model model, ServerWebExchange serverWebExchange){
-        MultiValueMap<String, String> map = serverWebExchange.getFormData().block();
-        Integer limit = Integer.valueOf(map.get("limit").get(0));
-
-        log.debug("Received limit value: " + limit);
-
-        if(limit == null || limit == 0){
-            log.debug("Setting a limit to default value of 10");
-            limit = 10;
-        }
-
-        model.addAttribute("users", apiService.getUsers(limit));
+    public String formPost(Model model, ServerWebExchange serverWebExchange) {
+        model.addAttribute("users",
+                apiService
+                        .getUsers(serverWebExchange
+                                .getFormData()
+                                .map(data -> Integer.valueOf(data.getFirst("limit")))));
 
         return "userlist";
     }
-
 }
+
