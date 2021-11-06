@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -42,7 +41,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public Flux<User> getUsers(Mono<Integer> limit) {
+    public Flux getUsers(Mono<Integer> limit) {
         return WebClient.create(api_url)
                 .get()
                 .uri(uriBuilder -> uriBuilder.queryParam("_limit", limit.toProcessor().block()).build())
